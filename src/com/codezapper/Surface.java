@@ -47,37 +47,53 @@ public class Surface extends JPanel {
         initSites();
     }
 
-    public ArrayList<Integer> getAdjacents(int x, int y) {
-        int[][] coords = {{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}};
-        ArrayList<Integer> retValue = new ArrayList<>();
+    public ArrayList<Integer> getLiveAdjacents(int x, int y) {
+        int[][] coords = {{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}, {x - 1, y - 1}, {x + 1, y + 1}, {x - 1, y + 1}, {x + 1, y - 1}};
+        ArrayList<Integer> retList = new ArrayList<>();
 
         for (int[] coord : coords) {
             try {
                 int _x = coord[0];
                 int _y = coord[1];
-                if ((_x < 0) || (_x >= columns)) {
-                    continue;
-                }
-
-                if (_y >= rows) {
-                    continue;
+                if (_x < 0) {
+                    x = columns - 1;
+                } else if (_x >= columns) {
+                    _x = 0;
                 }
 
                 if (_y < 0) {
-                    continue;
+                    _y = rows - 1;
+                } else if (_y >= rows - 1) {
+                    _y = 0;
                 }
 
                 int id = getIdFromCoords(_x, _y);
-
                 if (id > -1) {
-                    retValue.add(id);
+                    if (sites[id].getStatus() == Site.status.alive) {
+                        retList.add(id);
+                    }
                 }
             } catch (ArrayIndexOutOfBoundsException ex) {
                 System.out.println("Skipping because out of bounds");
             }
         }
 
-        return retValue;
+        return retList;
+    }
+
+    public void nextGeneration() {
+        for (Site site : sites) {
+            Integer neighbours = getLiveAdjacents(site.getX(), site.getY()).size();
+            if ((neighbours < 2) || (neighbours > 3)) {
+                site.setStatus(Site.status.dead);
+                continue;
+            }
+            if (neighbours == 3) {
+                site.setStatus(Site.status.alive);
+                continue;
+            }
+
+        }
     }
 
     public void startRandom() {
@@ -112,19 +128,12 @@ public class Surface extends JPanel {
         return coords;
     }
 
-    private void doDrawing(Graphics g) {
-        if (g2d == null) {
-            g2d = (Graphics2D) g;
-        }
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
         for (Site site : sites) {
             site.draw((Graphics2D) g);
         }
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        doDrawing(g);
     }
 }

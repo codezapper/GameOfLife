@@ -47,8 +47,8 @@ public class Site {
         }
         g2d.setPaint(new Color(0, 0, 0));
         g2d.setStroke(new BasicStroke(2));
-        Integer x_top_corner = x - (width / 2);
-        Integer y_top_corner = y - (height / 2);
+        Integer x_top_corner = ((x + 1) * width) - (width / 2);
+        Integer y_top_corner = ((y + 1) * width) - (height / 2);
         g2d.drawRect(x_top_corner, y_top_corner, width, height);
 
         if (_status == status.alive) {

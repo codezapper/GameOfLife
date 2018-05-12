@@ -16,7 +16,7 @@ public class Main {
     private void initUI() {
         JFrame frame = new JFrame("CustomLayoutDemo");
         Container pane = frame.getContentPane();
-        surface = new Surface(50, 50, 15, 15);
+        surface = new Surface(5, 5, 30, 30);
 
         pane.setLayout(new BorderLayout());
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -42,6 +42,10 @@ public class Main {
         lblStats.setPreferredSize(new Dimension(100, 100));
         topPanel.add(surface);
         topPanel.add(lblStats);
+
+        surface.open(1, 1);
+        surface.open(1, 2);
+        surface.open(1, 3);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(btnPanel, BorderLayout.SOUTH);

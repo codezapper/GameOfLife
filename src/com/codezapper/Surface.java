@@ -33,7 +33,7 @@ public class Surface extends JPanel {
         int i = 0;
         for (Integer row = 0; row < rows; row++) {
             for (Integer column = 0; column < columns; column++) {
-                sites[i] = new Site(i, (column + 1) * width, (row + 1) * height, width, height);
+                sites[i] = new Site(i, column, row, width, height);
                 i++;
             }
         }
@@ -47,8 +47,17 @@ public class Surface extends JPanel {
         initSites();
     }
 
+    public void open(int x, int y) {
+        sites[getIdFromCoords(x, y)].setStatus(Site.status.alive);
+    }
+
+    public void close(int x, int y) {
+        sites[getIdFromCoords(x, y)].setStatus(Site.status.dead);
+    }
+
     public ArrayList<Integer> getLiveAdjacents(int x, int y) {
         int[][] coords = {{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}, {x - 1, y - 1}, {x + 1, y + 1}, {x - 1, y + 1}, {x + 1, y - 1}};
+//        int[][] coords = {{x, y - 1}, {x, y + 1}};
         ArrayList<Integer> retList = new ArrayList<>();
 
         for (int[] coord : coords) {
@@ -56,7 +65,7 @@ public class Surface extends JPanel {
                 int _x = coord[0];
                 int _y = coord[1];
                 if (_x < 0) {
-                    x = columns - 1;
+                    _x = columns - 1;
                 } else if (_x >= columns) {
                     _x = 0;
                 }
@@ -82,18 +91,28 @@ public class Surface extends JPanel {
     }
 
     public void nextGeneration() {
+        Site.status[] newSites = new Site.status[sites.length];
+        int i = 0;
         for (Site site : sites) {
             Integer neighbours = getLiveAdjacents(site.getX(), site.getY()).size();
             if ((neighbours < 2) || (neighbours > 3)) {
-                site.setStatus(Site.status.dead);
+                newSites[i] = Site.status.dead;
+                i++;
                 continue;
             }
             if (neighbours == 3) {
-                site.setStatus(Site.status.alive);
+                newSites[i] = Site.status.alive;
+                i++;
                 continue;
             }
-
         }
+        i = 0;
+        for (Site.status newStatus : newSites) {
+            sites[i].setStatus(newStatus);
+            i++;
+        }
+        revalidate();
+        repaint();
     }
 
     public void startRandom() {

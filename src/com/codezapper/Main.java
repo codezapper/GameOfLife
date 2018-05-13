@@ -2,12 +2,15 @@ package com.codezapper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Timer;
 import java.util.Random;
+import java.util.TimerTask;
 
 
 public class Main {
     private Surface surface;
     private JLabel lblStats = new JLabel("");
+    Timer timer = new Timer();
 
     private Main() {
         initUI();
@@ -20,22 +23,27 @@ public class Main {
 
         pane.setLayout(new BorderLayout());
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton btnStartRandom = new JButton("Start random simulation");
+        JButton btnStart = new JButton("Start simulation");
         JButton btnStop = new JButton("Stop simulation");
         JButton btnNext = new JButton("Next generation");
         JButton btnQuit = new JButton("Quit");
 
-        btnPanel.add(btnStartRandom);
+        btnPanel.add(btnStart);
         btnPanel.add(btnStop);
         btnPanel.add(btnNext);
         btnPanel.add(btnQuit);
         JPanel topPanel = new JPanel();
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        btnStartRandom.addActionListener(e -> {
-            return;
+        btnStart.addActionListener(e -> {
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    surface.nextGeneration();
+                }
+            }, 250, 250);
         });
-//        btnStop.addActionListener(e -> surface.showConnected());
+        btnStop.addActionListener(e -> timer.cancel());
         btnNext.addActionListener(e -> surface.nextGeneration());
         btnQuit.addActionListener(e -> System.exit(0));
 
@@ -43,9 +51,9 @@ public class Main {
         topPanel.add(surface);
         topPanel.add(lblStats);
 
-        surface.open(1, 1);
-        surface.open(1, 2);
-        surface.open(1, 3);
+        surface.open(0, 1);
+        surface.open(0, 2);
+        surface.open(0, 3);
         surface.getLiveAdjacents(1, 2);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);

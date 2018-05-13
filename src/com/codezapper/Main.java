@@ -46,6 +46,7 @@ public class Main {
         surface.open(1, 1);
         surface.open(1, 2);
         surface.open(1, 3);
+        surface.getLiveAdjacents(1, 2);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(btnPanel, BorderLayout.SOUTH);

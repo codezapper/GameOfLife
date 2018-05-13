@@ -92,24 +92,22 @@ public class Surface extends JPanel {
 
     public void nextGeneration() {
         Site.status[] newSites = new Site.status[sites.length];
-        int i = 0;
+
         for (Site site : sites) {
             Integer neighbours = getLiveAdjacents(site.getX(), site.getY()).size();
             if ((neighbours < 2) || (neighbours > 3)) {
-                newSites[i] = Site.status.dead;
-                i++;
+                newSites[site.getId()] = Site.status.dead;
                 continue;
             }
             if (neighbours == 3) {
-                newSites[i] = Site.status.alive;
-                i++;
+                newSites[site.getId()] = Site.status.alive;
                 continue;
             }
+            newSites[site.getId()] = site.getStatus();
         }
-        i = 0;
-        for (Site.status newStatus : newSites) {
-            sites[i].setStatus(newStatus);
-            i++;
+
+        for (Site site : sites) {
+            sites[site.getId()].setStatus(newSites[site.getId()]);
         }
         revalidate();
         repaint();

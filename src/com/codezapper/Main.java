@@ -10,7 +10,7 @@ import java.util.TimerTask;
 public class Main {
     private Surface surface;
     private JLabel lblStats = new JLabel("");
-    Timer timer = new Timer();
+    Timer timer;
 
     private Main() {
         initUI();
@@ -36,6 +36,7 @@ public class Main {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         btnStart.addActionListener(e -> {
+            timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
@@ -50,11 +51,6 @@ public class Main {
         lblStats.setPreferredSize(new Dimension(100, 100));
         topPanel.add(surface);
         topPanel.add(lblStats);
-
-        surface.open(0, 1);
-        surface.open(0, 2);
-        surface.open(0, 3);
-        surface.getLiveAdjacents(1, 2);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(btnPanel, BorderLayout.SOUTH);

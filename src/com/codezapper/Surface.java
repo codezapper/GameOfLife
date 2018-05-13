@@ -2,10 +2,12 @@ package com.codezapper;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Surface extends JPanel {
+public class Surface extends JPanel implements MouseListener {
     private Site[] sites;
     private Graphics2D g2d = null;
 
@@ -44,6 +46,7 @@ public class Surface extends JPanel {
         this.columns = columns;
         this.width = width;
         this.height = height;
+        addMouseListener(this);
         initSites();
     }
 
@@ -57,7 +60,6 @@ public class Surface extends JPanel {
 
     public ArrayList<Integer> getLiveAdjacents(int x, int y) {
         int[][] coords = {{x - 1, y}, {x + 1, y}, {x, y - 1}, {x, y + 1}, {x - 1, y - 1}, {x + 1, y + 1}, {x - 1, y + 1}, {x + 1, y - 1}};
-//        int[][] coords = {{x, y - 1}, {x, y + 1}};
         ArrayList<Integer> retList = new ArrayList<>();
 
         for (int[] coord : coords) {
@@ -152,5 +154,38 @@ public class Surface extends JPanel {
         for (Site site : sites) {
             site.draw((Graphics2D) g);
         }
+    }
+
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        Integer id = getIdFromCoords((e.getX() - 15) / width, (e.getY() - 15) / height);
+        if (sites[id].getStatus() == Site.status.alive) {
+            sites[id].setStatus(Site.status.dead);
+        } else {
+            sites[id].setStatus(Site.status.alive);
+        }
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

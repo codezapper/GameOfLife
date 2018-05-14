@@ -74,7 +74,7 @@ public class Surface extends JPanel implements MouseListener {
 
                 if (_y < 0) {
                     _y = rows - 1;
-                } else if (_y >= rows - 1) {
+                } else if (_y >= rows) {
                     _y = 0;
                 }
 

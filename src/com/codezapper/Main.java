@@ -19,7 +19,7 @@ public class Main {
     private void initUI() {
         JFrame frame = new JFrame("CustomLayoutDemo");
         Container pane = frame.getContentPane();
-        surface = new Surface(5, 5, 30, 30);
+        surface = new Surface(15, 15, 30, 30);
 
         pane.setLayout(new BorderLayout());
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
